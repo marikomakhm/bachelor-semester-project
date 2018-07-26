@@ -1,0 +1,36 @@
+\begin{center}
+\begin{figure}[thbp]
+\centering
+\captionsetup{justification=centering, font=small, margin=0.5cm}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines=middle,
+    xmin=-10, xmax=10,
+    ymin=-8, ymax=8,
+    xlabel=$\xi_1$, ylabel=$\xi_2$,
+    xtick=\empty, ytick=\empty
+]
+\addplot [only marks] table {
+-8 -4
+-6  2
+-4  5   
+-3  7
+-2  3
+2  6
+};
+\addplot [only marks, mark=o] table {
+-3  -5
+3  -7
+1  -4
+5   -3
+6   3
+7   -1
+};
+\addplot [domain=-6:6, samples=2, dashed] {x};
+\addplot [domain=0:2, samples=2, -stealth] {-x} node[above right] {$w$};
+\end{axis}
+\end{tikzpicture}
+\caption{For $N=2$, output targets $\zeta^\mu$ are divided by a hyperplane perpendicular to $w$, passing through the origin. Adapted from \cite[p.93]{introbook}}
+\label{fig:2}
+\end{figure}
+\end{center}

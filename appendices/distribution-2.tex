@@ -1,0 +1,30 @@
+\section*{Appendix D}
+
+\addcontentsline{toc}{section}{Appendix D}
+
+We are interested in calculating the information storage capacity of a perceptron for a particular training set.
+
+The input pattern distribution is greatly similar to that in Appendix C. We assume an $N$-dimensional input, such that for every pattern $\mu = 1, 2, ..., p$ and every input dimension $j = 1, 2, ..., N$, we have:
+
+\begin{equation}
+    \xi_j^\mu = \frac{1}{\sqrt{R}} \sum_{r=1}^R u_{j r} v_{r \mu}
+\end{equation}
+
+\noindent where $U_{N \times R}$ and $V_{R \times p}$ are random matrices with i.i.d. elements that are equiprobable Bernoulli random variables, taking values in $\{ \pm 1 \}$. 
+
+The output pattern distribution is as such: for every pattern $\mu = 1, 2, ..., p$, we have $\zeta^\mu = f(V^\mu)$, $\zeta^\mu \in \{ \pm 1 \}$, where $f$ is any function used to calculate the output from matrix $V^\mu$.
+
+Analogously to the approach taken in Appendix C, we will be modifying the results of Gardner's approach to compute the storage capacity. The calculations remain the same up to equation (31) in Gardner's proof, where we calculate the expected value over the training set. We recompute (31) over the input-output patterns described above:
+
+\begin{align}
+    \mathbb{E}_{\xi, \zeta} \Big[ \prod_{\mu\alpha} e^{-ix_\alpha^\mu z_\alpha^\mu} \Big]
+    &= \prod_{j\mu} \mathbb{E}_{U, V, \zeta} \big[ \exp(-i N^{-\sfrac{1}{2}} \zeta^\mu \xi_j^\mu \sum_\alpha x_\alpha^\mu w_{j}^\alpha) \big] \nonumber \\
+    &= \prod_{j\mu} \mathbb{E}_{U, V, \zeta} \big[ \exp(-i N^{-\sfrac{1}{2}} \zeta^\mu \sum_{r=1}^R u_{jr} v_{r \mu} \sum_\alpha x_\alpha^\mu w_{j}^\alpha) \big] \nonumber \\
+    &= \prod_{j \mu r} \mathbb{E}_{U, V} \Big[ e^{-i N^{-\sfrac{1}{2}} u_{jr} v_{r\mu} \sum_\alpha x_\alpha^\mu w_{j}^\alpha} \Pr (\zeta^\mu = +1 | V^\mu) \nonumber \\
+    & \quad + e^{i N^{-\sfrac{1}{2}} u_{jr} v_{r\mu} \sum_\alpha x_\alpha^\mu w_{j}^\alpha} \Pr (\zeta^\mu = -1 | V^\mu) \Big] \nonumber \\
+    &= \prod_{j \mu r} \mathbb{E}_{V} \Big[ \cos \big( N^{-\sfrac{1}{2}} R^{-\sfrac{1}{2}} v_{r \mu} \sum_\alpha x_\alpha^\mu w_{j}^\alpha \big) \Big] \nonumber \\
+    &= \prod_{j \mu r} \cos \big( N^{-\sfrac{1}{2}} R^{-\sfrac{1}{2}} \sum_\alpha x_\alpha^\mu w_{j}^\alpha \big) \nonumber \\
+    &\xrightarrow{N \longrightarrow \infty} \exp \Big( -\frac{1}{2N} \sum_{\mu\alpha\beta} x_\alpha^\mu x_\beta^\mu \sum_j w_j^\alpha w_j^\beta \Big)
+\end{align}
+
+For sufficiently large $N$, the expected value is identical to that in (31). This signifies that the storage capacity of a perceptron learning the training set described above is the same as the storage capacity observed in Gardner's work with a different training set.

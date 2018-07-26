@@ -1,0 +1,176 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xfrac}
+\usepackage{tikz}
+\usepackage{subcaption}
+\usepackage{pgfplots}
+\usepackage{soul}
+\usepackage[margin=3cm, footskip=1cm]{geometry}
+\usepackage{hyperref}
+\usepackage[superscript]{cite}
+\usepackage[title, titletoc]{appendix}
+\usepackage[nottoc]{tocbibind}
+\setlength{\belowcaptionskip}{-4pt}
+
+\pgfplotsset{compat=1.15}
+
+\begin{document}
+
+\input{title-page.tex}
+
+\tableofcontents
+
+\newpage
+
+\vspace{10cm}
+\begin{abstract}
+
+In this work, we study the variation of the information storage capacity of a simple perceptron when trained on image classifier patterns. We begin by studying properties of the perceptron learning structure as well as Cover's theorem and Gardner's results on storage capacity. Then, considering training sets composed of images that are classified on some number of features, we apply Gardner's method of evaluating storage capacity. We conclude that there is no variation in information storage capacity for the considered distributions.
+
+\end{abstract}
+\vfill
+
+\newpage
+
+\input{introduction.tex}
+
+\section{Information storage capacity}
+
+Consider a simple perceptron with $N$-dimensional input and $M$-dimensional output. We are interested in studying the information storage capacity of such a perceptron as $N$ tends to infinity while $M$ remains fixed. The information storage capacity of a perceptron is defined as the maximum number of patterns that it can learn.
+
+We interpret this for a simple perceptron with input vector $\xi$ and computed binary outputs $O_i$ for $i = 1, 2, ... M$. Finding the capacity is equivalent to defining a maximum $p$ value such that, given a training set of $p$ patterns $\xi_j^\mu \longrightarrow \zeta_i^\mu$ with $j = 1, 2, ..., N$ and $\mu = 1, 2, ... p$, the following relation is satisfied for all $i$ and $\mu$:
+
+\begin{equation}
+    \zeta_i^\mu = O_i^\mu
+\end{equation}
+
+We study two approaches to computing storage capacity. Cover's theorem \cite{introbook, orhan} relies on the reasoning that for a set of patterns to be stored in a neural network, the patterns must be linearly separable. Gardner's work \cite{introbook, gardner} uses replica methods to compute the capacity.
+
+\subsection{Cover's theorem}
+
+Suppose that we have $p$ points in $\mathbb{R}^N$. There are $2^p$ possible partitions of these $p$ points into two classes, for example colouring each point in red or blue. We define a dichotomy as a partition that yields linearly separable classes, i.e. where the red and blue points can be separated by an $(N-1)$-dimensional hyperplane. We are interested in determining how many partitions of the $p$ points yield dichotomies.
+
+We assume that the points are in general position, so that any subset of $N$ or fewer points is linearly independent.
+
+We denote the number of dichotomies of $p$ points in $N$ dimensions by $C(p, N)$. A detailed explanation in Appendix A describes how we obtain the following equation representing the number of dichotomies $C(p, N)$:
+
+\begin{equation}
+    C(p, N) = 2 \sum_{i=0}^{N-1} \binom{p-1}{i}
+\end{equation}
+
+Fig. 3 shows the fraction of partitions of $p$ points a simple perceptron is able to dichotomize. There is clearly a sharp phase transition with large $N$ when $p = 2N$. At this point, there is a transition from the perceptron being able to store all $p$ points to none of them. This phase transition represents the maximum capacity at $p = 2N$.
+
+\begin{center}
+\begin{figure}[thbp]
+    \centering
+    \captionsetup{justification=centering, font=small, margin=0.5cm}
+    \includegraphics[height=6cm]{images/capacity-graph.png}
+    \caption{Fraction of partitions of $p$ points that a simple perceptron is able to dichotomize for varying $N$}
+\end{figure}
+\end{center}
+
+\subsection{Gardner's theory}
+
+Gardner's approach to deducing information storage capacity evaluates the fraction of weight space in which a perceptron is able to store a given number of patterns. A more complete version of this proof can be referred to in Appendix B.
+
+We consider a simple perceptron with $N$-dimensional binary input vector $\xi$ and $M$-dimensional binary output vector $O$ given by:
+
+\begin{equation}
+    O_i = \mathrm{sgn} \left( N^{-\sfrac{1}{2}} \sum_j w_{ij} \xi_j \right)
+\end{equation}
+
+\noindent for $i = 1, 2, ..., M$.
+
+Suppose a training set of $p$ patterns $\xi_j^\mu \longrightarrow \zeta_i^\mu$ with $\mu = 1, 2, ... p$. It is assumed that all $\xi_j^\mu, \zeta_i^\mu$ are i.i.d. equiprobable Bernoulli random variables, such that $\xi_j^\mu, \zeta_i^\mu \in \{ \pm 1 \}$. We want to deduce in what fraction of weight space the following relation is satisfied for all $i$ and $\mu$:
+
+\begin{equation}
+    \zeta_i^\mu = O_i^\mu
+\end{equation}
+
+This condition is identical for each index $i$, so we can drop the $i$ to consider a single output unit to simplify our calculations without loss of generality. Using the definition of $O$, we rewrite the above relation as:
+
+\begin{equation}
+    \zeta_i^\mu N^{-\sfrac{1}{2}}\sum_j w_{j} \xi_j^\mu > 0
+\end{equation}
+
+Condition (12) can be strengthened by considering the possibility of small errors in the input pattern. To do so, we replace the right-hand side of the inequality with a stability parameter $\kappa > 0$. We obtain the following strengthened condition:
+
+\begin{equation}
+    \zeta^\mu N^{-\sfrac{1}{2}}\sum_j w_{j} \xi_j^\mu > \kappa
+\end{equation}
+
+We add the following constraint to the problem to keep the weight vector $w$ within bounds:
+
+\begin{equation}
+    \sum_j w_j^2 = N
+\end{equation}
+
+The principal quantity that we want to calculate is the volume fraction of weight space in which (13) is satisfied:
+
+\begin{equation}
+    V = \frac{\int \left( \prod_\mu \Theta \left( \zeta^\mu N^{-\sfrac{1}{2}}\sum_j w_{j} \xi_j^\mu - \kappa \right) \right) \delta \left( \sum_j w_j^2 - N \right) \, \mathrm{d} w}{\int \delta(\sum_j w_j^2 - N) \, \mathrm{d} w}
+\end{equation}
+
+Here, the Dirac delta function $\delta$ is used to enforce (14) and the step function $\Theta$ is used to restrict the numerator to regions of the weight space satisfying condition (13).
+
+Applying the replica trick, and through a series of simplifications of the expected value of volume $V$, we obtain the following equation, which gives the storage capacity for fixed $\kappa$:
+
+\begin{equation}
+    \alpha_c (\kappa) = \left[ \int_{-\kappa}^\infty \frac{dt}{\sqrt{2 \pi}} e^{t^2 / 2} (t + \kappa)^2 \right] ^{-1}
+\end{equation}
+
+We observe that by setting parameter $\kappa = 0$ we obtain the results observed in Cover's theorem.
+
+\section{Applications in image classification}
+
+It is interesting to determine information storage capacity in relation to image classification. We are often concerned with acquiring enough data to train a model, but we should also consider the situation in which the model is unable to learn all of the patterns in the training set. In this section we will study how storage capacity varies for two different input-output pattern distributions used to represent image classifier patterns \footnote{The representations considered are inspired by an example in [\citen{mezard}].}.
+
+We consider a training set of $p$ images, each of which contains $N$ pixels. Suppose that there is some number $R$ of features that are present in each pixel and image. We represent the input pattern for pixel $j$ of image $\mu$ by:
+
+\begin{equation}
+    \xi_j^\mu = \frac{1}{\sqrt{R}} \sum_{r=1}^R u_{j r} v_{r \mu}
+\end{equation}
+
+\noindent where $U$ is an $N \times R$ matrix representing the presence of each feature in each pixel and $V$ is an $R \times p$ matrix representing the presence of each feature in each image.
+
+We want to perform a binary classification of each image, so we denote the output pattern for each image $\mu$ by $\zeta^\mu$, with $\zeta^\mu \in \{ \pm 1 \}$.\footnote{The training set can be generalized for multiple output dimensions, provided that they are i.i.d.}
+
+We base our deduction of the storage capacity for the image training set described above on Gardner's work, adapting the calculations where needed.
+
+First, we consider the case of output being independent of the input. We suppose that all elements in $U$ and $V$ are i.i.d. Bernoulli random variables with parameters $\phi$ and  $\gamma$ respectively, taking values in $\{ \pm 1 \}$. The output pattern $\zeta$ follows an equiprobable Bernoulli distribution, taking values in $\{ \pm 1 \}$.
+
+Applying the appropriate modifications to Gardner's work, which can be referred to in detail in Appendix C, we observe that the storage capacity does not change for this training set. This implies that the maximum number of image patterns following this distribution that a perceptron is able to learn is $2N$.
+
+We note that the results do not vary depending on the number of features $R$, nor the values of parameters $\phi$ and $\gamma$ describing the input pattern distribution.
+
+To verify if this property can be generalized to other training sets we consider a different distribution. In this case, we suppose that the output classification uniquely depends on the presence of each feature in an image, not in each pixel. To model such a training set, we consider the a similar input pattern distribution to the one in the first case. We suppose that all elements in $U$ and $V$ are i.i.d. equiprobable Bernoulli random variables, taking values in $\{ \pm 1 \}$. The output pattern distribution is modified as such: for every pattern $\mu = 1, 2, ..., p$, we have $\zeta^\mu = f(V^\mu)$, $\zeta^\mu \in \{ \pm 1 \}$, where $f$ is a function used to classify the output.
+
+Performing a similar calculation as we did for the previous distribution, which can be referred to in more detail in Appendix D, we conclude that the storage capacity does not change for this input-output pattern distribution. Again, the results are invariant with respect to the number of features $R$.
+
+\section{Conclusion}
+The information storage capacity of a perceptron is an important structural property, which allows us to set an upper limit on the number of patterns a perceptron is able to learn. Applying methods studied in literature, we computed the storage capacity for two training sets representing image classifiers. We observed that the storage capacity was invariant for these training sets, regardless of the number of image features considered.
+
+Unfortunately, due to time constraint, we were unable to study other training sets, to determine a general rule for this property. It would be interesting to consider, in a further work, how the storage capacity changes with more complex input pattern distributions. Another, considerably more complex, training set to consider would be one with multiple output dimensions that are not i.i.d., to imitate a more realistic model.
+
+\newpage
+
+\input{appendices/cover-theorem.tex}
+
+\vspace{-0.5cm}
+
+\input{appendices/gardner-theory.tex}
+
+\input{appendices/distribution-1.tex}
+
+\newpage
+
+\input{appendices/distribution-2.tex}
+
+\newpage
+
+\input{bibliography.tex}
+
+\end{document}

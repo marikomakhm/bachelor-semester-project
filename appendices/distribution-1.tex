@@ -1,0 +1,26 @@
+\section*{Appendix C}
+
+\addcontentsline{toc}{section}{Appendix C}
+
+We are interested in calculating the information storage capacity of a perceptron for a particular input-output pattern distribution. We assume that the input is $N$-dimensional, the output is binary and the training set consists of $p$ patterns. For every pattern $\mu = 1, 2, ..., p$ and every input dimension $j = 1, 2, ..., p$, we have:
+
+\begin{equation}
+    \xi_j^\mu = \frac{1}{\sqrt{R}} \sum_{r=1}^R u_{j r} v_{r \mu}
+\end{equation}
+
+\noindent where $U_{N \times R}$ and $V_{R \times p}$ are independent random matrices with i.i.d. elements that are Bernoulli random variables with parameters $\phi$ and  $\gamma$ respectively, taking values in $\{ \pm 1 \}$.
+
+The output pattern is represented by $\zeta^\mu$ and is modelled by an equiprobable Bernoulli random variable such that $\zeta^\mu \in \{ \pm 1 \}$.
+
+We are interested in adapting Gardner's approach to compute the storage capacity. The calculations remain the same up to equation (31) in Gardner's proof, where we calculate the expected value over the training set. We compute the same expected value over the input-output pattern distribution described above:
+
+\begin{align}
+    \mathbb{E}_{\xi, \zeta} \Big[ \prod_{\mu\alpha} e^{-ix_\alpha^\mu z_\alpha^\mu} \Big]
+    &= \prod_{j\mu} \mathbb{E}_{U, V, \zeta} \big[ \exp(-i N^{-\sfrac{1}{2}} \zeta^\mu \xi_j^\mu \sum_\alpha x_\alpha^\mu w_{j}^\alpha) \big] \nonumber \\
+    &= \prod_{j\mu} \mathbb{E}_{U, V, \zeta} \big[ \exp(-i N^{-\sfrac{1}{2}} \zeta^\mu \sum_{r=1}^R u_{jr} v_{r \mu} \sum_\alpha x_\alpha^\mu w_{j}^\alpha) \big] \nonumber \\
+    &= \prod_{j \mu r} \mathbb{E}_{U, V} \Big[ \cos \big( N^{-\sfrac{1}{2}} R^{-\sfrac{1}{2}} u_{jr} v_{r \mu} \sum_\alpha x_\alpha^\mu w_{j}^\alpha \big) \Big] \nonumber \\
+    &= \prod_{j \mu r} \cos \big( N^{-\sfrac{1}{2}} R^{-\sfrac{1}{2}} \sum_\alpha x_\alpha^\mu w_{j}^\alpha \big) \nonumber \\
+    &\xrightarrow{N \longrightarrow \infty} \exp \Big( -\frac{1}{2N} \sum_{\mu\alpha\beta} x_\alpha^\mu x_\beta^\mu \sum_j w_j^\alpha w_j^\beta \Big)
+\end{align}
+
+The computed expected value is identical to that in (31), for sufficiently large $N$. This implies that the storage capacity of a perceptron learning the input-output patterns described above does not differ from the capacity observed in Gardner's work with a different input-output pattern distribution.

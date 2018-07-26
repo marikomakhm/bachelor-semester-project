@@ -1,0 +1,205 @@
+\section*{Appendix B}
+
+\addcontentsline{toc}{section}{Appendix B}
+
+In this appendix, we summarize Gardner's theory. In her work, Gardner determines the storage capacity by computing the fraction of weight space in which a perceptron is able to store a given number of patterns. 
+
+We use a simple perceptron with $N$ binary input units $\xi_j \in \{ \pm 1 \}$ and $M$ binary output units which are calculated using $O_i = \mathrm{sgn} (N^{-\sfrac{1}{2}} \sum_j w_{ij} \xi_j)$ for $i = 1, 2, ... M$. 
+
+Given a training set of $p$ patterns $\xi_j^\mu \longrightarrow \zeta_i^\mu$ with $\mu = 1, 2, ... p$, we want to know in what fraction of weight space the following relation is satisfied for all $i$ and $\mu$:
+
+\begin{equation}
+    \zeta_i^\mu = O_i
+\end{equation}
+
+This condition is identical for each index $i$, so we can drop the $i$ and consider the case of one output unit to simplify our calculations without loss of generality. We use the definition of $O$ to rewrite the condition as:
+
+\begin{equation}
+    \zeta^\mu N^{-\sfrac{1}{2}} \sum_j w_{j} \xi_j^\mu > 0
+\end{equation}
+
+We strengthen (23) by considering the possibility of minor errors in the input pattern. To do so, we replace the right-hand side of the equation with a stability parameter $\kappa > 0$. This gives the following strengthened condition:
+
+\begin{equation}
+    \zeta^\mu N^{-\sfrac{1}{2}}\sum_j w_{j} \xi_j^\mu > \kappa
+\end{equation}
+
+Note that the $N$ weights $w_j$ are of order 1, and a sum of $N$ terms of order 1 gives a term of order $N^{\sfrac{1}{2}}$. To prevent (24) from scaling with $N$, we add a $N^{-\sfrac{1}{2}}$ factor on the left-hand side. This allows $\kappa$ to be a constant independent of $N$.
+
+We add the following constraint to the problem to keep the weights within bounds:
+
+\begin{equation}
+    \sum_j w_j^2 = N
+\end{equation}
+
+The principal quantity that we want to calculate is the volume fraction of weight space in which (24) is satisfied:
+
+\begin{equation}
+    V = \frac{\int \left(\prod_\mu \Theta \left( \zeta^\mu N^{-\sfrac{1}{2}} \sum_j w_{j} \xi_j^\mu - \kappa \right) \right) \delta \left( \sum_j w_j^2 - N \right) \, \mathrm{d} w}{\int \delta(\sum_j w_j^2 - N) \, \mathrm{d} w}
+\end{equation}
+
+Here, the Dirac delta function $\delta$ is enforces condition (25) and the step function $\Theta$ restricts the numerator to regions of the weight space satisfying (24).
+
+Given that both the numerator and the denominator in (26) grow exponentially with $N$, we are interested in calculating the average of $\log (V)$, rather than of $V$ itself, which is the approximation of the following limit:
+
+\begin{equation}
+    \ln Z = \lim_{n \longrightarrow 0} \frac{Z^n - 1}{n}
+\end{equation}
+
+Using the replica trick, we compute the expected value of $V^n$ over the training set:
+
+\begin{equation}
+    \textstyle{\mathbb{E}_{\xi, \zeta} [V^n] = \frac{\mathbb{E}_{\xi, \zeta} \left [\prod_{\alpha=1}^n \int \left( \prod_\mu \Theta \left( \zeta^\mu N^{-\sfrac{1}{2}} \sum_j w_{j}^\alpha \xi_j^\mu - \kappa \right) \right) \delta \left( \sum_j (w_j^\alpha)^2 - N \right) \, \mathrm{d} w^\alpha \right] }{\Pi_{\alpha=1}^n \int \delta(\sum_j (w_j^\alpha)^2 - N) \, \mathrm{d} w^\alpha}}
+\end{equation}
+
+We proceed by simplifying (28) using integral representations of the step and delta functions.
+
+The step function can be written in its integral form as:
+
+\begin{equation}
+    \Theta(z - \kappa) = \int_\kappa^{\infty} \delta(\lambda - z) \mathrm{d} \lambda = \int_\kappa^{\infty} \int_0^{2 \pi} \frac{1}{2\pi} e^{ix(\lambda - z)} \, \mathrm{d} x \, \mathrm{d} \lambda
+\end{equation}
+
+Since (28) has step functions for each $\alpha$ and $\mu$, we must use corresponding variables $\lambda_\alpha^\mu$, $x_\alpha^\mu$. The step function in the numerator becomes:
+
+\begin{equation}
+    \Theta \big( \zeta^\mu N^{-\sfrac{1}{2}} \sum_j w_{j}^\alpha \xi_j^\mu - \kappa \big) = \frac{1}{2\pi}\int_\kappa^{\infty} \int_0^{2 \pi} e^{ix_\alpha^\mu\lambda_\alpha^\mu} e^{-ix_\alpha^\mu z_\alpha^\mu} \, \mathrm{d} x_\alpha^\mu \, \mathrm{d} \lambda_\alpha^\mu
+\end{equation}
+
+\noindent where $z_\alpha^\mu = \zeta^\mu N^{-\sfrac{1}{2}} \sum_j w_{j}^\alpha \xi_j^\mu$.
+
+We can easily compute the expected value over the $\xi_j^\mu$'s and $\zeta^\mu$'s, since they only appear in the last factor of (30).
+
+Under the hypothesis that the input and output patterns are i.i.d. equiprobable Bernoulli random variables, we have:
+
+\begin{align}
+    \mathbb{E} \Big[ \prod_{\mu\alpha} e^{-ix_\alpha^\mu z_\alpha^\mu} \Big]
+    &= \prod_{j\mu} \mathbb{E} \big[ \exp(-i\zeta^\mu \xi_j^\mu N^{-\sfrac{1}{2}} \sum_\alpha x_\alpha^\mu w_{j}^\alpha) \big] \nonumber \\
+    &= \prod_{j\mu} \big( \frac{1}{2}\exp(-iN^{-\sfrac{1}{2}} \sum_\alpha x_\alpha^\mu w_{j}^\alpha) + \frac{1}{2} \exp(iN^{-\sfrac{1}{2}} \sum_\alpha x_\alpha^\mu w_{j}^\alpha) \big) \nonumber \\
+    &= \prod_{j\mu} \cos \big( N^{-\sfrac{1}{2}} \sum_\alpha x_\alpha^\mu w_{j}^\alpha \big) \nonumber \\
+    &= \exp \Big( \sum_{j\mu} \log (\cos \big[ N^{-\sfrac{1}{2}} \sum_\alpha x_\alpha^\mu w_{j}^\alpha \big] ) \Big) \nonumber \\
+    &\xrightarrow{N \longrightarrow \infty} \exp \Big( -\frac{1}{2N} \sum_{\mu\alpha\beta} x_\alpha^\mu x_\beta^\mu \sum_j w_j^\alpha w_j^\beta \Big)
+\end{align}
+
+We define a new variable $q_{\alpha\beta}$, which measures the overlap between vectors $w^\alpha$ and $w^\beta$:
+
+\begin{equation}
+    q_{\alpha\beta} = \frac{1}{N} \sum_j w_j^\alpha w_j^\beta
+\end{equation}
+
+From (25), we know that $q_{\alpha\alpha} = 1$. It is evident that $q_{\alpha\beta} = q_{\beta\alpha}$. We are therefore able to rewrite the approximation in (31) as:
+
+\begin{equation}
+    \mathbb{E} \left[\prod_{\mu\alpha} e^{-ix_\alpha^\mu z_\alpha^\mu} \right] = \prod_\mu \exp \left( -\frac{1}{2} \sum_\alpha (x_\alpha^\mu)^2 - \sum_{\alpha < \beta} q_{\alpha\beta} x_\alpha^\mu x_\beta^\mu \right)
+\end{equation}
+
+When inserting (33) into (28), one can see that the result is identical for every $\mu$, so we can drop the $\mu$'s to obtain:
+
+\begin{equation}
+    \mathbb{E} \Big[ \prod_{\mu\alpha} \Theta(z_\alpha^\mu - \kappa) \Big] = \left[ \frac{1}{2 \pi} \prod_\alpha \int_\kappa^{\infty} \int_0^{2 \pi} e^{K\{\lambda, x, q\}} \, \mathrm{d} x_\alpha \, \mathrm{d} \lambda_\alpha \right] ^p
+\end{equation}
+
+\begin{equation}
+    K\{\lambda, x, q\} = i \sum_\alpha x_\alpha \lambda_\alpha - \frac{1}{2} \sum_\alpha x_\alpha^2 - \sum_{\alpha < \beta} q_{\alpha\beta} x_\alpha x_\beta
+\end{equation}
+
+We will now simplify the delta functions in (28). The integral representation of the delta function is as follows:
+
+\begin{equation}
+    \delta(z) = \frac{1}{2 \pi i} \int_{- \infty}^{\infty} e^{-rz} \, \mathrm{d} r
+\end{equation}
+
+We choose $r = \sfrac{E_\alpha}{2}$ for each $\alpha$ to write the delta functions in (28) as:
+
+\begin{equation}
+    \delta \Big( \sum_j (w_j^\alpha)^2 - N \Big) = \frac{1}{4 \pi i} \int_{- \infty}^{\infty} e^{N E_\alpha / 2 - E_\alpha \sum_j (w_j^\alpha)^2 / 2} \, \mathrm{d} E_\alpha
+\end{equation}
+
+We also use the delta function to enforce (32) for every pair $\alpha, \beta$ with $\alpha < \beta$ by choosing $r = N F_{\alpha\beta}$:
+
+\begin{equation}
+    \delta \Big( q_{\alpha\beta} - \frac{1}{N} \sum_{j} w_j^\alpha w_j^\beta \Big) = \frac{1}{2 \pi i} \int_{- \infty}^{\infty} e^{- N F_{\alpha\beta} q_{\alpha\beta} + F_{\alpha\beta} \sum_j w_j^\alpha w_j^\beta} \, \mathrm{d} F_{\alpha \beta}
+\end{equation}
+
+In order to enforce condition (32) for all $\alpha, \beta$, we must integrate over $q_{\alpha\beta}$.
+
+We assemble the factors in (34), (35), (37), (38) and drop the identical $j$ indices to obtain the following reformulation of (28):
+
+\begin{equation}
+    \mathbb{E}[V^n] = \frac{ \prod_\alpha \prod_{\alpha < \beta} \iiint e^{N G\{q, F, E\}} \mathrm{d} E_\alpha \mathrm{d} q_{\alpha\beta} \mathrm{d} F_{\alpha\beta} }{ \prod_\alpha \int e ^{N H\{E\}} \mathrm{d} E_\alpha }
+\end{equation}
+
+\begin{align}
+    G\{q, F, E\} = 
+    & \frac{p}{N} \log \left[ \prod_\alpha \int_\kappa^{\infty} \int_0^{2 \pi} e^{K\{\lambda, x, q\}} \, \mathrm{d} x_\alpha \, \mathrm{d} \lambda_\alpha \right]
+    \nonumber \\ & + \log \left[ \prod_\alpha \int_{- \infty}^{\infty} e^{- \sum_\alpha E_\alpha w_\alpha^2 / 2 + \sum_{\alpha < \beta} F_{\alpha\beta} w_\alpha w_\beta} \, \mathrm{d} w_\alpha \right]
+    \nonumber \\ & - \sum_{\alpha < \beta} F_{\alpha\beta} q_{\alpha\beta} + \frac{1}{2} \sum_\alpha E_\alpha
+\end{align}
+
+\begin{equation}
+    H\{E\} = \log \left[ \prod_\alpha \int_{- \infty}^{\infty} e^{-\sum_\alpha E_\alpha w_\alpha^2 / 2} \mathrm{d} w_\alpha \right] + \frac{1}{2} \sum_\alpha E_\alpha
+\end{equation}
+
+As the exponents in (39) grow in proportion to $N$, we can use the saddle point method to calculate the volume $V^n$ as $N$ tends to infinity. We make the following replica-symmetric ansatz (with the first two terms only for $\alpha \neq \beta$):
+
+\begin{gather}
+    q_{\alpha \beta} = q \nonumber \\
+    F_{\alpha \beta} = F \nonumber \\
+    E_\alpha = E
+\end{gather}
+
+We can now evaluate each term in (40). To evaluate the first term, we begin by rewriting $K\{\lambda, x, q\}$ from (35):
+
+\begin{align}
+    K\{\lambda, x, q\}
+    & = i \sum_\alpha x_\alpha \lambda_\alpha - \frac{1}{2} \sum_\alpha x_\alpha^2 - q \sum_{\alpha < \beta} x_\alpha x_\beta \nonumber \\
+    & = i \sum_\alpha x_\alpha \lambda_\alpha - \frac{1 - q}{2} \sum_\alpha x_\alpha^2 - \frac{q}{2} \Big( \sum_\alpha x_\alpha \Big) ^2
+\end{align}
+
+\noindent where we can now linearize the last term using a Gaussian integral:
+
+\begin{equation}
+    e^{-\frac{1}{2} q \left( \sum_\alpha x_\alpha \right) ^2} = \frac{1}{\sqrt{2 \pi}} \int_{- \infty}^{\infty} e^{- t^2 / 2 + it \sqrt{q} \sum_\alpha x_\alpha } \, \mathrm{d} t
+\end{equation}
+
+The integral in the first term of (40) now gives a product of identical integrals over every $\lambda_\alpha$, which can be replaced by a single integral to the power of $n$. The first term of (40) becomes, for small n:
+
+\begin{gather}
+    n \alpha \frac{1}{\sqrt{2\pi}} \int_{- \infty}^{\infty} e^{t^2 / 2} \log \left[ \int_\kappa^\infty \frac{1}{\sqrt{2 \pi (1 - q)}} \exp \left( - \frac{(\lambda + t \sqrt{q})^2}{2(1 - q)} \, \mathrm{d} \lambda \right) \, \mathrm{d} t \right]
+\end{gather}
+
+\noindent where $\alpha = \frac{p}{N}$.
+
+We evaluate the second term of (40) in a similar way:
+
+\begin{equation}
+    \frac{1}{2} n \left( \log (2 \pi) - \log (E + F) + \frac{F}{E + F} \right)
+\end{equation}
+
+For small $n$, third line of (40) can be approximated by the following:
+
+\begin{equation}
+    \frac{1}{2} n (E + qF)
+\end{equation}
+
+We now search for the saddle point equation of $G$ with respect to $q$, $F$ and $E$. At the saddle point, the value of $q$ represents the probability of overlap between any two solutions.
+
+When $\alpha$ is small, a large region of weight space solves (26). This implies that the solutions are likely to be uncorrelated, causing a small value of overlap $q$. As $\alpha$ increases, it becomes harder to find solutions, so overlap between solutions increases. When there is only one solution, we have $q = 1$. We say that the perceptron is optimal is at this point -- the perceptron has maximum capacity possible for a given stability parameter $\kappa$ or highest stability for a given $\alpha$. We are consequently interested in the limit $q \longrightarrow 1$.
+
+We calculate the saddle point equations $\frac{\partial G}{\partial E} = 0$ and $\frac{\partial G}{\partial F} = 0$ to express $E$ and $F$ in function of $q$. Replacing $E$ and $F$ by these optimal values, we obtain $G \{ q \}$.
+
+We are now able to compute the saddle point equation at $\frac{\partial G}{\partial q} = 0$, which gives:
+
+\begin{equation}
+    \alpha \int \frac{dt}{\sqrt{2 \pi}} e^{t^2 / 2} \left[ \int_u^\infty dz e^{z^2 / 2} \right] ^{-1} e^{u^2 / 2} \frac{t + \kappa \sqrt{q}}{2 \sqrt{q} (1 - q)^{3/2}} = \frac{q}{2 (1 - q)^2}
+\end{equation}
+
+\noindent where $u = \frac{t \sqrt{q} + \kappa}{\sqrt{1 - q}}$.
+
+Taking the limit $q \longrightarrow 1$, we have the capacity for fixed $\kappa$:
+
+\begin{equation}
+    \alpha_c (\kappa) = \left[ \int_{-\kappa}^\infty \frac{dt}{\sqrt{2 \pi}} e^{t^2 / 2} (t + \kappa)^2 \right] ^{-1}
+\end{equation}
+
+The equation can also be used to find a $\kappa$ for the optimal perceptron to be able to store $N \alpha$ patterns.
